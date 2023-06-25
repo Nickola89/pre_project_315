@@ -9,7 +9,7 @@ import java.util.List;
 public interface UserService {
     List<User> getAllUsers();
 
-    boolean saveUser(User user);
+    void saveUser(User user);
 
     User getUser(long id);
 

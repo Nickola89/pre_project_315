@@ -40,19 +40,15 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     public User findByUsername(String username) {
         return userRepository.findByUsername(username);
     }
+
     @Transactional(readOnly = true)
     public List<User> getAllUsers() {
         return userRepository.findAll();
     }
 
-    public boolean saveUser(User user) {
-        if (userRepository.findByUsername(user.getUsername()) == null) {
-            user.setRoles(Collections.singleton(roleRepository.getOne(2L)));
-            user.setPassword(passwordEncoder.encode(user.getPassword()));
-            userRepository.save(user);
-            return true;
-        }
-        return false;
+    public void saveUser(User user) {
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        userRepository.save(user);
     }
 
 
@@ -62,6 +58,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         user.setPassword(oldUser.getPassword());
         userRepository.save(user);
     }
+
     @Transactional(readOnly = true)
     public User getUser(long id) {
         return userRepository.getOne(id);
@@ -75,12 +72,13 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = findByUsername(username);
-        if(user == null) {
+        if (user == null) {
             throw new UsernameNotFoundException(String.format("User `%s` not found", username));
 
         }
-        return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(),mapRolesToAuthority(user.getRoles()));
+        return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), mapRolesToAuthority(user.getRoles()));
     }
+
     private Collection<? extends GrantedAuthority> mapRolesToAuthority(Collection<Role> roles) {
         return roles.stream().map(r -> new SimpleGrantedAuthority(r.getName())).collect(Collectors.toList());
     }

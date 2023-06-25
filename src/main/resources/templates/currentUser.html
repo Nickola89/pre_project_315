@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org">
+<head>
+    <title>Hello</title>
+</head>
+<body>
+
+<div>
+    <th:block th:each="user : ${users}">
+
+        <p th:text="${user.getId}">Value</p>
+        <p th:text="${user.getUsername()}">Value</p>
+        <p th:text="${user.getEmail()}">Value</p>
+        <br/>
+        <br/>
+    </th:block>
+</div>
+<form th:action="@{/logout}">
+    <input type="submit" value="Logout"/>
+</form>
+</body>
+</html>
