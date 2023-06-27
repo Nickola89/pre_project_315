@@ -14,6 +14,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.validation.constraints.Email;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 import java.util.Collection;
 import java.util.Set;
@@ -24,10 +25,12 @@ public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-    @Size(min = 2, message = "Не меньше 5 знаков")
+    @Size(min = 2, max = 30, message = "Name should be between 2 and 30 characters")
+    @NotEmpty(message = "Name should not be empty")
     private String username;
-    @Size(min = 2, message = "Не меньше 5 знаков")
+    @Size(min = 2, message = "At least 5 characters")
     private String password;
+    @NotEmpty(message = "Email should not be empty")
     @Email(message = "Email should be valid")
     private String email;
     @ManyToMany(fetch = FetchType.LAZY)

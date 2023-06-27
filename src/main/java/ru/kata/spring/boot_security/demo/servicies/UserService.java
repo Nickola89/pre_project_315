@@ -18,6 +18,4 @@ public interface UserService {
     void updateUser(User user);
 
     User findByUsername(String username);
-
-    UserDetails loadUserByUsername(String username) throws UsernameNotFoundException;
 }
