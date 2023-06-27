@@ -57,7 +57,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     @Transactional(readOnly = true)
     public User getUser(long id) {
-        return userRepository.getOne(id);
+        return userRepository.findById(id).get();
     }
 
 
