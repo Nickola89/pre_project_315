@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.kata.spring.boot_security.demo.entities.Role;
 import ru.kata.spring.boot_security.demo.entities.User;
+import ru.kata.spring.boot_security.demo.exception.UserAlreadyException;
 import ru.kata.spring.boot_security.demo.repositories.UserRepository;
 
 import java.util.Collection;
@@ -48,16 +49,21 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
 
-    public void updateUser(User user) {
-        User oldUser = userRepository.findByUsername(user.getUsername());
-        user.setRoles(oldUser.getRoles());
-        user.setPassword(oldUser.getPassword());
-        userRepository.save(user);
+    public void updateUser(User user, long id) {
+
+        User oldUser = userRepository.getById(id);
+        oldUser.setUsername(user.getUsername());
+//        System.out.println(user);
+//        if (!user.getPassword().equals(oldUser.getPassword())){
+//            user.setPassword(passwordEncoder.encode(user.getPassword()));
+//        }
+//        userRepository.save(user);
     }
 
     @Transactional(readOnly = true)
     public User getUser(long id) {
-        return userRepository.findById(id).get();
+            return userRepository.findById(id).orElseThrow(() -> new UserAlreadyException("пользователь не найден"));
+
     }
 
 
@@ -72,11 +78,6 @@ public class UserServiceImpl implements UserService, UserDetailsService {
             throw new UsernameNotFoundException(String.format("User `%s` not found", username));
 
         }
-        return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), mapRolesToAuthority(user.getRoles()));
+        return user;
     }
-
-    private Collection<? extends GrantedAuthority> mapRolesToAuthority(Collection<Role> roles) {
-        return roles.stream().map(r -> new SimpleGrantedAuthority(r.getName())).collect(Collectors.toList());
-    }
-
 }

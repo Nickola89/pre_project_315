@@ -33,7 +33,7 @@ public class User implements UserDetails {
     @Email(message = "Email should be valid")
     @NotEmpty(message = "Email should not be empty")
     private String email;
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "users_roles",
             joinColumns = @JoinColumn(name = "user_id"),
@@ -89,6 +89,9 @@ public class User implements UserDetails {
     public Set<Role> getRoles() {
         return roles;
     }
+    public String getAllRolesAsString() {
+        return getRoles().toString().replaceAll("\\[", "").replaceAll("\\]","").replace("ROLE_", "");
+    }
 
     public void setRoles(Set<Role> roles) {
         this.roles = roles;
@@ -117,5 +120,16 @@ public class User implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                ", email='" + email + '\'' +
+                ", roles=" + roles +
+                '}';
     }
 }

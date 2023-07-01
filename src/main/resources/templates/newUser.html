@@ -6,31 +6,32 @@
 </head>
 <body>
 
-<form th:method="POST" th:action="@{/admin/showAllUsers}" th:object="${user}">
-    <label for="username">Enter name: </label>
-    <input type="text" th:field="*{username}" id="username"/>
-    <div style="color: red" th:if="${#fields.hasErrors('username')}" th:errors="*{username}">Name error</div>
-    <br/>
-    <label for="password">Enter password: </label>
-    <input type="text" th:field="*{password}" id="password"/>
-    <div style="color: red" th:if="${#fields.hasErrors('password')}" th:errors="*{password}">Name error</div>
-    <br/>
-    <label for="email">Enter email: </label>
-    <input type="text" th:field="*{email}" id="email"/>
-    <div style="color: red" th:if="${#fields.hasErrors('email')}" th:errors="*{email}">Name error</div>
-    <br/>
+<form th:method = "POST" th:action = "@{/admin/}" th:object= "${user}">
+    <label for = "username"> Username:</label>
+    <input type = "text" th:field = "*{username}" id = "username"/>
+    <br>
+    <br>
+    <label for = "email"> Email:</label>
+    <input type = "text" th:field = "*{email}" id = "email"/>
+    <br>
+    <br>
+    <label for = "password"> Password:</label>
+    <input type = "text" th:field = "*{password}" id = "password"/>
+    <br>
+    <br>
     <label>Role:
         <select size="2" multiple name="roles">
-            <option value="1">ADMIN</option>
-            <option selected="selected" value="2">USER</option>
+            <option value="2">USER</option>
+            <option selected="selected" value="1">ADMIN</option>
         </select>
     </label>
-
-    <br/><br/>
-
-    <input type="submit" value="Create!"/>
-
+    <br>
+    <br>
+    <input type = "submit" value = "OK"/>
 </form>
+<br>
+<input type = "button" value = "logout"
+       onclick = "window.location.href = '/logout'"/>
 
 </body>
 </html>

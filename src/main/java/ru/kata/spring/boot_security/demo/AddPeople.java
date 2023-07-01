@@ -34,8 +34,8 @@ public class AddPeople implements CommandLineRunner {
         adminRoles.add(roleUser);
         userRoles.add(roleUser);
 
-        User userAdmin = new User(1, "user1", "admin", "user1@mail.ru", adminRoles);
-        User userUser = new User(2, "user2", "user", "user2@mail.ru", userRoles);
+        User userAdmin = new User(1, "admin", "admin", "user1@mail.ru", adminRoles);
+        User userUser = new User(2, "user", "user", "user2@mail.ru", userRoles);
         userServiceImpl.saveUser(userAdmin);
         userServiceImpl.saveUser(userUser);
 

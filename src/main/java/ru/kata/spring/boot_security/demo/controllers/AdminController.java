@@ -6,6 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,11 +16,16 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import ru.kata.spring.boot_security.demo.entities.Role;
 import ru.kata.spring.boot_security.demo.entities.User;
 import ru.kata.spring.boot_security.demo.exception.UserAlreadyException;
+import ru.kata.spring.boot_security.demo.servicies.RoleServiceImpl;
 import ru.kata.spring.boot_security.demo.servicies.UserServiceImpl;
 
 import javax.validation.Valid;
+import java.security.Principal;
+import java.util.Collection;
+import java.util.List;
 
 
 @Slf4j
@@ -27,67 +33,50 @@ import javax.validation.Valid;
 @RequestMapping("/admin")
 public class AdminController {
     private final UserServiceImpl userService;
+    private final RoleServiceImpl roleService;
 
-    public AdminController(UserServiceImpl userService) {
+    public AdminController(UserServiceImpl userService, RoleServiceImpl roleService) {
         this.userService = userService;
+        this.roleService = roleService;
     }
 
     @GetMapping()
-    public String showAllUsers(Model model) {
-        model.addAttribute("users", userService.getAllUsers());
+    public String printUsers(ModelMap model, Principal principal) {
+        User user = userService.findByUsername(principal.getName());
+        model.addAttribute("user", user);
+        List<User> listOfUsers = userService.getAllUsers();
+        model.addAttribute("listOfUsers", listOfUsers);
         return "showAllUsers";
     }
 
-    @GetMapping("/newUser")
-    public String newUser(Model model) {
-        model.addAttribute("user", new User());
+    @GetMapping("/addNewUser")
+    public String showCreateUserForm(ModelMap model) {
+        User user = new User();
+        Collection<Role> roles = roleService.getAllRoles();
+        model.addAttribute("user", user);
+        model.addAttribute("roles", roles);
         return "newUser";
     }
-
-    @ExceptionHandler
-    public ResponseEntity<String> handle(UserAlreadyException exception) {
-        log.error(exception.getMessage());
-        return new ResponseEntity<>(exception.getMessage(), HttpStatus.PAYMENT_REQUIRED);
-    }
-
-    @SneakyThrows
-    @PostMapping("/showAllUsers")
-    public String create(@ModelAttribute @Valid User user,
-                         BindingResult bindingResult) {
-        if (bindingResult.hasErrors())
-            return "newUser";
+    @PostMapping("/")
+    public String addUser(@ModelAttribute("user") User user) {
         userService.saveUser(user);
-        return "redirect:/admin";
+        return "redirect:/admin/";
     }
-
-    @GetMapping("/{id}")
-    public String displayUser(@PathVariable int id, Model model) {
-        model.addAttribute("user", userService.getUser(id));
-        return "displayUser";
-    }
-
-    @GetMapping("{id}/edit")
-    public String edit(Model model, @PathVariable int id) {
+       @GetMapping("{id}/edit")
+    public String showEditUserForm(Model model, @PathVariable int id) {
         model.addAttribute("user", userService.getUser(id));
         return "updateUser";
     }
 
-    @PatchMapping("{id}")
-    public String update(@ModelAttribute @Valid User user, BindingResult bindingResult) {
-        if (bindingResult.hasErrors())
-            return "updateUser";
-        userService.updateUser(user);
-        return "redirect:/admin";
+    @PatchMapping("/{id}")
+    public String editUser(@ModelAttribute User user, @PathVariable("id") long id) {
+        System.out.println(user);
+        userService.updateUser(user, id);
+        return "redirect:/admin/";
     }
-
-    @DeleteMapping("{id}")
+       @DeleteMapping("{id}")
     public String deleteUser(@PathVariable int id) {
         userService.deleteUser(id);
-        return "redirect:/admin";
-    }
-
-    @GetMapping("/logout")
-    public String logout() {
-        return "redirect:/login";
+        return "redirect:/admin/";
     }
 }
