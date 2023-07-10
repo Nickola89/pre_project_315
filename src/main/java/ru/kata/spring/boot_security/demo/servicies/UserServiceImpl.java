@@ -9,7 +9,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.kata.spring.boot_security.demo.entities.User;
-import ru.kata.spring.boot_security.demo.exception.UserAlreadyException;
+import ru.kata.spring.boot_security.demo.exception.NoSuchUserException;
 import ru.kata.spring.boot_security.demo.repositories.UserRepository;
 
 import java.util.List;
@@ -43,7 +43,6 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         userRepository.save(user);
     }
 
-
     public void updateUser(User user, long id) {
 
         User oldUser = userRepository.getById(id);
@@ -55,9 +54,11 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     @Transactional(readOnly = true)
     public User getUser(long id) {
-        return userRepository.findById(id).orElseThrow(() -> new UserAlreadyException("пользователь не найден"));
+        return userRepository.findById(id).orElseThrow(() -> new NoSuchUserException("There is no user with ID = " +
+                id + " in Database"));
 
     }
+
 
     public void deleteUser(long id) {
         userRepository.deleteById(id);
@@ -68,7 +69,6 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         User user = findByUsername(username);
         if (user == null) {
             throw new UsernameNotFoundException(String.format("User `%s` not found", username));
-
         }
         return user;
     }
