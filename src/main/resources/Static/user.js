@@ -7,13 +7,6 @@ async function getAuthUser() {
         : null
 }
 
-/*export async function getAuthUsername() {
-    return await getAuthUser()
-        .then(authUser => authUser.username)
-        .then(username => {
-            return username === undefined ? null : username
-        })
-}*/
 function getUserPage() {
     fetch(userUrl).then(response => response.json()).then(auth => {
             console.log(auth);

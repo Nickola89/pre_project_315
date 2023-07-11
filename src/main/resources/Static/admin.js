@@ -71,14 +71,11 @@ document.getElementById('newUserForm').addEventListener('submit', (e) => {
                 document.getElementById("all-users-tab").click()
             }
         })
-    // loadTable()
-    // window.location="/api/admin"
 })
 
 
 // Закрытие модального окна
 function closeModal() {
-    // document.getElementById("editClose").click()
     document.querySelectorAll(".btn-close").forEach((btn) => btn.click())
 }
 
@@ -170,49 +167,3 @@ async function deleteUser() {
     })
 }
 
-
-/*  let res = $(".table #tableBodyAdmin");
-    res.empty()
-    for (let user of listAllUsers) {
-        let tr = $("<tr/>")
-        let th = $("<th/>")
-
-        th.text(user.id)
-        tr.append(th)
-
-        let tdUsername = $("<td/>")
-        tdUsername.text(user.username)
-        tr.append(tdUsername)
-
-        let tdEmail = $("<td/>")
-        tdEmail.text(user.email)
-        tr.append(tdEmail)
-
-        res.append(tr)
-        let tdRoles = $("<td/>")
-
-        let roles = ""
-        for (let role of user.roles) {
-
-                roles += `${role.name.substring(5)}`
-            roles += " "
-        }
-        tdRoles.text(roles)
-        tr.append(tdRoles)
-
-        let tdEdit = $("<td/>")
-        let editBtn =$("<button id='edit' class='btn btn-primary' type='button'>")
-        editBtn.text("Edit")
-        editBtn.val(user.username)
-        editBtn.bind("click", editUser())
-        tdEdit.append(editBtn)
-        tr.append(tdEdit)
-
-        let tdDelete = $("<td/>")
-        let deleteBtn =$("<button id='delete' class='btn btn-danger' type='button'>")
-        deleteBtn.text("Delete")
-        deleteBtn.val(user.username)
-        deleteBtn.bind("click", deleteUser())
-        tdDelete.append(deleteBtn)
-        tr.append(tdDelete)
-    }*/

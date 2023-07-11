@@ -1,6 +1,5 @@
 package ru.kata.spring.boot_security.demo.controllers;
 
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,7 +18,6 @@ import javax.validation.Valid;
 import java.util.List;
 
 
-@Slf4j
 @RestController
 @RequestMapping("/api")
 public class AdminRestController {
@@ -47,9 +45,7 @@ public class AdminRestController {
 
     @PutMapping("/admin/{id}")
     public ResponseEntity<User> updateUser(@RequestBody User user, @PathVariable long id) {
-        System.out.println("пришел юзер"+user);
         userService.updateUser(user, id);
-        System.out.println("Обновленный юзер"+user);
         return ResponseEntity.ok(user);
     }
 

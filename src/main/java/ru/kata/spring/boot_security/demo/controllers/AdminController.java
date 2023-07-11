@@ -1,10 +1,9 @@
 package ru.kata.spring.boot_security.demo.controllers;
 
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
 import ru.kata.spring.boot_security.demo.entities.User;
 import ru.kata.spring.boot_security.demo.servicies.RoleServiceImpl;
 import ru.kata.spring.boot_security.demo.servicies.UserServiceImpl;
@@ -12,7 +11,6 @@ import ru.kata.spring.boot_security.demo.servicies.UserServiceImpl;
 import java.security.Principal;
 
 
-@Slf4j
 @Controller
 public class AdminController {
     private final UserServiceImpl userService;
@@ -32,7 +30,6 @@ public class AdminController {
         model.addAttribute("user", user);
         model.addAttribute("newUser", new User());
         model.addAttribute("allRoles", roleService.getAllRoles());
-        model.addAttribute("titleTable", "Список всех пользователей:");
         return "showAllUsers";
     }
 
