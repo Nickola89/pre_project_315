@@ -41,15 +41,15 @@ public class AdminRestController {
 
     @PostMapping("/admin")
     public ResponseEntity<User> addUser(@RequestBody @Valid User user) {
-        System.out.println(user);
         userService.saveUser(user);
         return ResponseEntity.ok(user);
     }
 
     @PutMapping("/admin/{id}")
-    public ResponseEntity<User> updateUser(@RequestBody User user) {
-        System.out.println(user);
-        userService.saveUser(user);
+    public ResponseEntity<User> updateUser(@RequestBody User user, @PathVariable long id) {
+        System.out.println("пришел юзер"+user);
+        userService.updateUser(user, id);
+        System.out.println("Обновленный юзер"+user);
         return ResponseEntity.ok(user);
     }
 

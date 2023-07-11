@@ -119,13 +119,13 @@ async function editUser() {
     }
     let user = {
         id: idValue,
-        name: usernameValue,
-        userName: emailValue,
+        username: usernameValue,
+        email: emailValue,
         password: passwordValue,
         roles: listOfRole
     }
     await fetch(url + '/' + user.id, {
-        method: "PATCH",
+        method: "PUT",
         headers: {
             'Accept': 'application/json',
             'Content-Type': 'application/json;charset=UTF-8'

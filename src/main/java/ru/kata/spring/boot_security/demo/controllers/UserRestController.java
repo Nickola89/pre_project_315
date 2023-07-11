@@ -23,6 +23,7 @@ public class UserRestController {
     public ResponseEntity<User> showUser(Principal principal) {
         System.out.println(principal);
         User user = userService.findByUsername(principal.getName());
+        System.out.println(principal.getName());
         System.out.println(user);
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
