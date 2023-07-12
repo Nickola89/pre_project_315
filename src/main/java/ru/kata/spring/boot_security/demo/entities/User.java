@@ -11,6 +11,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.FetchType;
 import javax.persistence.JoinTable;
 import javax.persistence.JoinColumn;
+import javax.persistence.Column;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.validation.constraints.Email;
@@ -27,6 +28,7 @@ public class User implements UserDetails {
     private long id;
 
     @NotEmpty(message = "Name should not be empty")
+    @Column(unique = true)
     @Size(min = 2, max = 30, message = "Name should be between 2 and 30 characters")
     private String username;
     @Size(min = 2, message = "At least 5 characters")
